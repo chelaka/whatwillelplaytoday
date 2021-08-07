@@ -1,5 +1,3 @@
-var nameArray = [];
-
 var names;
 var winner;
 
@@ -22,40 +20,43 @@ function fillDefaults() {
 }
 
 $("#pick").click(function () {
+  var nameArray = [];
   $(".preset-option .name").map(function () {
     // return [$(this).data("value").split(",")];
     nameArray.push($(this).text());
   });
 
-  // Get a random name, the winner
-  winner = nameArray[Math.floor(Math.random() * nameArray.length)];
+  if (nameArray.length != 0) {
+    // Get a random name, the winner
+    winner = nameArray[Math.floor(Math.random() * nameArray.length)];
 
-  var time = new Date().toString().split(" ");
-  var timeZoneFormatted =
-    time[0] +
-    "-" +
-    time[1] +
-    "-" +
-    time[2] +
-    "-" +
-    time[3] +
-    "|" +
-    time[4] +
-    "-" +
-    time[5];
+    var time = new Date().toString().split(" ");
+    var timeZoneFormatted =
+      time[0] +
+      "-" +
+      time[1] +
+      "-" +
+      time[2] +
+      "-" +
+      time[3] +
+      "|" +
+      time[4] +
+      "-" +
+      time[5];
 
-  db.collection("rolls").doc(timeZoneFormatted).set({
-    options: nameArray,
-    selected: winner,
-  });
+    db.collection("rolls").doc(timeZoneFormatted).set({
+      options: nameArray,
+      selected: winner,
+    });
 
-  winner = "🎉" + " " + winner + " " + "🎉";
+    winner = "🎉" + " " + winner + " " + "🎉";
 
-  // Display winner
-  $("#world").addClass("open");
-  $("#winner").addClass("open");
-  $("#close").addClass("open");
-  $("#winner").text(winner);
+    // Display winner
+    $("#world").addClass("open");
+    $("#winner").addClass("open");
+    $("#close").addClass("open");
+    $("#winner").text(winner);
+  }
 });
 
 $("#close").click(function () {
